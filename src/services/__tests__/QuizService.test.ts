@@ -48,7 +48,7 @@ describe('QuizService', () => {
                 { id: 'mastery', sequenceOrder: 3 },
             ]
 
-                ; (ContentService.getAllStages as jest.Mock).mockReturnValue(mockStages)
+                (ContentService.getAllStages as jest.Mock).mockReturnValue(mockStages)
 
             const sortedStages = mockStages.sort((a, b) => a.sequenceOrder - b.sequenceOrder)
             const currentIndex = sortedStages.findIndex((s) => s.id === 'mastery')
