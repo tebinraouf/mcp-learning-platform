@@ -4,7 +4,32 @@
 
 import type { Quiz, QuizAttempt, QuizAnswer, StageId } from '@/types'
 import * as LearnerService from './LearnerService'
+import * as ContentService from './ContentService'
 import { v4 as uuidv4 } from 'uuid'
+
+/**
+ * Find the next stage in the learning sequence.
+ * Internal helper for stage progression logic.
+ * 
+ * @param currentStageId - The current stage ID
+ * @returns The next stage ID, or undefined if current is the final stage
+ */
+function getNextStageId(currentStageId: StageId): StageId | undefined {
+    const stages = ContentService.getAllStages()
+
+    // Sort by sequence order
+    const sortedStages = [...stages].sort((a, b) => a.sequenceOrder - b.sequenceOrder)
+
+    // Find current stage index
+    const currentIndex = sortedStages.findIndex(s => s.id === currentStageId)
+
+    // Return next stage or undefined if last
+    if (currentIndex === -1 || currentIndex === sortedStages.length - 1) {
+        return undefined
+    }
+
+    return sortedStages[currentIndex + 1].id as StageId
+}
 
 /**
  * Start a new quiz attempt
@@ -102,6 +127,12 @@ export function completeQuizAttempt(
         quizAttempts: updatedAttempts,
         sessionCounters: updatedCounters,
     })
+
+    // Automatic stage progression when quiz is passed
+    if (passed) {
+        const nextStageId = getNextStageId(quiz.stageId)
+        LearnerService.completeStage(quiz.stageId, nextStageId)
+    }
 
     return completedAttempt
 }
