@@ -10,7 +10,7 @@
     "lint": "next lint",
     "test": "jest",
     "test:e2e": "playwright test",
-    "validate-content": "node scripts/validate-content.js"
+    "validate-content": "tsx scripts/validate-content.js"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.15",
@@ -33,7 +33,7 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.49.0",
-    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.1.0",
     "@types/jest": "^30.0.0",
     "@types/node": "^22.10.5",
@@ -48,6 +48,7 @@
     "postcss": "^8.4.49",
     "prettier": "^3.4.2",
     "tailwindcss": "^3.4.17",
+    "tsx": "^4.20.6",
     "typescript": "^5.7.3"
   }
 }

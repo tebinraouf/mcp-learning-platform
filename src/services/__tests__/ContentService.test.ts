@@ -4,6 +4,11 @@
 
 import * as ContentService from '@/services/ContentService'
 
+// Mock uuid
+jest.mock('uuid', () => ({
+    v4: jest.fn(() => 'test-uuid-1234'),
+}))
+
 describe('ContentService', () => {
     describe('getAllStages', () => {
         it('should return all 5 stages', () => {

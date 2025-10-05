@@ -5,6 +5,11 @@
 import * as LearnerService from '@/services/LearnerService'
 import type { Learner, StageId } from '@/types'
 
+// Mock uuid
+jest.mock('uuid', () => ({
+    v4: jest.fn(() => 'test-uuid-1234'),
+}))
+
 // Mock StorageService
 jest.mock('@/services/StorageService', () => ({
     saveLearner: jest.fn(),
