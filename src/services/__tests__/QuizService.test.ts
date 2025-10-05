@@ -105,8 +105,8 @@ describe('QuizService', () => {
                 { id: 'architecture-messages', sequenceOrder: 2 },
             ]
 
-                ; (StorageService.getLearner as jest.Mock).mockReturnValue(mockLearner)
-                ; (ContentService.getAllStages as jest.Mock).mockReturnValue(mockStages)
+                (StorageService.getLearner as jest.Mock).mockReturnValue(mockLearner)
+                (ContentService.getAllStages as jest.Mock).mockReturnValue(mockStages)
 
             const mockQuiz: Quiz = {
                 id: 'quiz-1',
