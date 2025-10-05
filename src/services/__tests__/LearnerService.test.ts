@@ -294,7 +294,7 @@ describe('LearnerService', () => {
                 },
             }
 
-                ; (StorageService.getLearner as jest.Mock).mockReturnValue(mockLearner)
+                (StorageService.getLearner as jest.Mock).mockReturnValue(mockLearner)
 
             LearnerService.completeStage('mastery', undefined)
 
