@@ -4,6 +4,7 @@
 
 import type { Learner, StageId, StageStatus, ModuleId } from '@/types'
 import * as StorageService from './StorageService'
+import { formatDuration } from '@/lib/time'
 import { v4 as uuidv4 } from 'uuid'
 
 /**
@@ -168,19 +169,22 @@ export function incrementInteractions(): Learner {
  * Update session duration
  */
 export function updateSessionDuration(): Learner {
-    const sessionStart = StorageService.getSessionStart()
-    if (!sessionStart) return getLearner()
+    // Use sessionStartTime from sessionStorage (set by SessionInitializer)
+    const sessionStartTime = parseInt(
+        (typeof window !== 'undefined' && sessionStorage.getItem('sessionStartTime')) ||
+        Date.now().toString(),
+        10
+    )
 
-    const start = new Date(sessionStart)
-    const now = new Date()
-    const duration = now.getTime() - start.getTime()
+    const currentTime = Date.now()
+    const durationMs = currentTime - sessionStartTime
 
     const current = getLearner()
 
     return updateLearner({
         sessionCounters: {
             ...current.sessionCounters,
-            sessionDuration: duration,
+            sessionDuration: durationMs,
         },
     })
 }
@@ -198,6 +202,14 @@ export function getSessionDuration(): number {
  */
 export function getSessionDurationMinutes(): number {
     return Math.floor(getSessionDuration() / 1000 / 60)
+}
+
+/**
+ * Get formatted session duration (e.g., "5m 30s", "1h 15m")
+ */
+export function getFormattedSessionDuration(): string {
+    const durationMs = getSessionDuration()
+    return formatDuration(durationMs)
 }
 
 /**

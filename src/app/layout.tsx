@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import { ErrorBoundary } from '@/components/ErrorBoundary'
+import { SessionInitializer } from '@/components/SessionInitializer'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -19,9 +20,11 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <ErrorBoundary>
+          <SessionInitializer />
           {children}
         </ErrorBoundary>
       </body>
     </html>
   )
 }
+
