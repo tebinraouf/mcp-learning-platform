@@ -168,7 +168,7 @@
 
 ## Wave 4: Documentation (Sequential - After Implementation)
 
-- [ ] **T010** Update README.md with deployment information
+- [x] **T010** Update README.md with deployment information
   - **Type**: Documentation
   - **Dependencies**: T001-T009 (all implementation and testing complete)
   - **Files**: `README.md` (modify existing)
