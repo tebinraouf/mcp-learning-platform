@@ -13,8 +13,6 @@ import { NavigationHeader } from '@/components/NavigationHeader'
 import { MarkdownRenderer } from '@/components/MarkdownRenderer'
 import { CodeExample } from '@/components/CodeExample'
 
-export const dynamic = 'force-dynamic'
-
 interface ModulePageProps {
   params: Promise<{
     moduleId: string
