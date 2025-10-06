@@ -197,12 +197,12 @@ describe('LearnerService', () => {
         })
     })
 
-    describe('unlockStage', () => {
-        it('should unlock the next stage', () => {
+    describe('completeStage', () => {
+        it('should mark stage as completed and unlock next stage', () => {
             const mockLearner: Learner = {
                 sessionId: 'test-session',
                 stageStatuses: {
-                    'foundations': 'completed',
+                    'foundations': 'in-progress',
                     'architecture-messages': 'locked',
                     'advanced-patterns': 'locked',
                     'building-debugging': 'locked',
@@ -241,12 +241,67 @@ describe('LearnerService', () => {
 
                 ; (StorageService.getLearner as jest.Mock).mockReturnValue(mockLearner)
 
-            LearnerService.unlockStage('architecture-messages')
+            LearnerService.completeStage('foundations', 'architecture-messages')
 
             expect(StorageService.saveLearner).toHaveBeenCalledWith(
                 expect.objectContaining({
                     stageStatuses: expect.objectContaining({
+                        'foundations': 'completed',
                         'architecture-messages': 'in-progress',
+                    }),
+                })
+            )
+        })
+
+        it('should handle final stage completion without next stage', () => {
+            const mockLearner: Learner = {
+                sessionId: 'test-session',
+                stageStatuses: {
+                    'foundations': 'completed',
+                    'architecture-messages': 'completed',
+                    'advanced-patterns': 'completed',
+                    'building-debugging': 'completed',
+                    'mastery': 'in-progress',
+                },
+                quizAttempts: [],
+                moduleCompletions: {},
+                preferences: {},
+                sessionCounters: {
+                    stageStarts: {
+                        'foundations': 1,
+                        'architecture-messages': 1,
+                        'advanced-patterns': 1,
+                        'building-debugging': 1,
+                        'mastery': 1,
+                    },
+                    quizAttempts: {
+                        'foundations': 1,
+                        'architecture-messages': 1,
+                        'advanced-patterns': 1,
+                        'building-debugging': 1,
+                        'mastery': 1,
+                    },
+                    quizPasses: {
+                        'foundations': 1,
+                        'architecture-messages': 1,
+                        'advanced-patterns': 1,
+                        'building-debugging': 1,
+                        'mastery': 0,
+                    },
+                    moduleViews: {},
+                    sessionDuration: 0,
+                    interactionCount: 0,
+                },
+            }
+
+                (StorageService.getLearner as jest.Mock).mockReturnValue(mockLearner)
+
+            LearnerService.completeStage('mastery', undefined)
+
+            expect(StorageService.saveLearner).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    stageStatuses: expect.objectContaining({
+                        'mastery': 'completed',
                     }),
                 })
             )

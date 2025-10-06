@@ -119,9 +119,9 @@ export function completeStage(stageId: StageId, nextStageId?: StageId): Learner 
         [stageId]: 'completed',
     }
 
-    // Unlock next stage if provided
+    // Unlock next stage if provided (automatic progression)
     if (nextStageId) {
-        updatedStatuses[nextStageId] = 'locked' // Will be set to in-progress when user clicks
+        updatedStatuses[nextStageId] = 'in-progress'
     }
 
     return updateLearner({
