@@ -89,14 +89,14 @@ export function MarkdownRenderer({ content, className = '' }: MarkdownRendererPr
       // Regular code blocks
       if (inline) {
         return (
-          <code className="px-1.5 py-0.5 rounded-md bg-muted text-foreground font-mono text-sm" {...props}>
+          <code className="bg-gray-100 text-gray-900 dark:bg-gray-800 dark:text-gray-100 px-1.5 py-0.5 rounded font-mono text-sm" {...props}>
             {children}
           </code>
         )
       }
       
       return (
-        <pre className="bg-muted rounded-lg p-4 overflow-x-auto border border-border">
+        <pre className="bg-gray-100 border border-gray-300 text-gray-900 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-100 rounded-lg p-4 overflow-x-auto font-mono text-sm leading-relaxed">
           <code className={className} {...props}>
             {children}
           </code>

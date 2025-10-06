@@ -139,7 +139,7 @@ export default function ProgressPage() {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">
-                {LearnerService.getSessionDurationMinutes()}m
+                {LearnerService.getFormattedSessionDuration()}
               </div>
               <p className="text-xs text-muted-foreground mt-2">
                 {learner.sessionCounters.interactionCount} interactions

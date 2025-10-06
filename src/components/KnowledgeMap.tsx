@@ -4,8 +4,11 @@
 
 'use client'
 
+import { useMemo } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { LearnerService } from '@/services'
+import { calculateMastery, getMasteryLevel, type MasteryLevel } from '@/lib/mastery'
 
 interface ConceptNode {
   id: string
@@ -26,6 +29,29 @@ export function KnowledgeMap({
   onConceptClick,
   className = '',
 }: KnowledgeMapProps) {
+  // Calculate overall mastery from learner's quiz performance
+  const masteryData = useMemo(() => {
+    try {
+      const learner = LearnerService.getLearner()
+      const masteryPercentage = calculateMastery(learner)
+      const masteryLevel = getMasteryLevel(masteryPercentage)
+      return { percentage: masteryPercentage, level: masteryLevel }
+    } catch {
+      // Learner not initialized yet
+      return { percentage: 0, level: 'Beginner' as MasteryLevel }
+    }
+  }, [])
+
+  const getMasteryBadgeColor = (level: MasteryLevel): string => {
+    const colors: Record<MasteryLevel, string> = {
+      Beginner: 'bg-gray-100 text-gray-900 dark:bg-gray-800 dark:text-gray-100',
+      Intermediate: 'bg-blue-100 text-blue-900 dark:bg-blue-800 dark:text-blue-100',
+      Advanced: 'bg-yellow-100 text-yellow-900 dark:bg-yellow-800 dark:text-yellow-100',
+      Master: 'bg-green-100 text-green-900 dark:bg-green-800 dark:text-green-100',
+    }
+    return colors[level]
+  }
+
   const getCategoryColor = (category: string) => {
     const colors: Record<string, string> = {
       protocol: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
@@ -66,6 +92,43 @@ export function KnowledgeMap({
 
   return (
     <div className={`space-y-6 ${className}`}>
+      {/* Overall Mastery Badge */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center justify-between">
+            <span>Your Overall Mastery</span>
+            <Badge className={`${getMasteryBadgeColor(masteryData.level)} px-3 py-1 text-sm font-medium`}>
+              {masteryData.percentage}% {masteryData.level}
+            </Badge>
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="flex items-center gap-2">
+            <div className="flex-1 h-3 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+              <div
+                className={`h-full transition-all ${
+                  masteryData.level === 'Master'
+                    ? 'bg-green-500'
+                    : masteryData.level === 'Advanced'
+                      ? 'bg-yellow-500'
+                      : masteryData.level === 'Intermediate'
+                        ? 'bg-blue-500'
+                        : 'bg-gray-500'
+                }`}
+                style={{ width: `${masteryData.percentage}%` }}
+              />
+            </div>
+            <span className="text-sm text-gray-600 dark:text-gray-400 min-w-fit">
+              {masteryData.percentage}%
+            </span>
+          </div>
+          <p className="text-sm text-muted-foreground mt-2">
+            Based on your quiz performance across all stages
+          </p>
+        </CardContent>
+      </Card>
+
+      {/* Concept Categories */}
       {Object.entries(conceptsByCategory).map(([category, categoryConcepts]) => (
         <Card key={category}>
           <CardHeader>
