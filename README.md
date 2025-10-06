@@ -96,17 +96,20 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 ### Available Scripts
 
 **Development:**
+
 - `npm run dev` - Start development server (port 3000)
 - `npm run lint` - Run ESLint
 - `npm test` - Run Jest unit tests
 - `npm run test:e2e` - Run Playwright E2E tests
 
 **Production:**
+
 - `npm run build` - Build for production (SSR mode)
 - `npm run build:static` - Build static export for GitHub Pages
 - `npm start` - Serve production build
 
 **Local Testing:**
+
 ```bash
 # Test static export locally before deployment
 npm run build:static
@@ -260,17 +263,20 @@ Output in `out/` directory. Can be deployed to:
 **Live URL**: `https://[username].github.io/mcp-learning-platform/`
 
 **Automatic Deployment**:
+
 - Triggers on merge to `main` branch
 - GitHub Actions workflow builds and deploys
 - Build time: ~4-5 minutes (cached), ~7-8 minutes (cold)
 
 **Manual Deployment**:
+
 1. Navigate to repository "Actions" tab
 2. Select "Deploy to GitHub Pages" workflow
 3. Click "Run workflow" → "Run workflow"
 4. Wait for deployment completion (~5 minutes)
 
 **Local Testing Before Deployment**:
+
 ```bash
 # Build static export
 npm run build:static
@@ -284,6 +290,7 @@ npx serve out -p 8080
 ```
 
 **Deployment Validation**:
+
 - See [quickstart.md](./specs/005-i-want-to/quickstart.md) for comprehensive validation scenarios
 - Verify client-side routing works (direct navigation to /progress)
 - Check all assets load correctly (images, JS bundles)
